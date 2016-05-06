@@ -1,11 +1,6 @@
 import numpy as np
-import scipy.optimize as opt
-import sys
-#import matplotlib.pyplot as plt
 import types
 from utils import cast_init_to_fun
-
-debug = False
 
 
 class CNModel(object):
@@ -18,17 +13,19 @@ class CNModel(object):
 init_cond could be eiter callable or numerical; if float(int) given casting to constant function occurs
     '''
 
-    def __init__(self, lambd, dt, dx, dy, T, M, N, sigma=1., alpha=1., beta=1., m_0=1., init_cond=None):
+    def __init__(self, lambd, dt, dx, dy, T, M, N, sigma=1., alpha=1., 
+                beta=1., m_0=1., init_cond=None):
         self.lambd = lambd
         self.dt = float(dt)
         self.dx = float(dx)
         self.dy = float(dy)
         if (type(T) is not int or type(M) is not int or type(N) is not int):
             raise ValueError("Nodes number (T,M,N): int expected")
-        self.T = T  # self.T = int(T/dt)+1
-        self.M = M  # self.M = int(M/dx)+1
-        self.N = N  # self.N = int(N/dy)+1
-        self.domain = (self.dt * self.T, self.dx * (self.M - 1), self.dy * (self.N - 1))
+        self.T = T
+        self.M = M
+        self.N = N
+        self.domain = (self.dt * self.T, self.dx * (self.M - 1), self.dy * 
+                        (self.N - 1))
         print "Model on (0,%s) time interval, [0,%s]x[0,%s] plane created" % self.domain
         self.alpha = alpha
         self.beta = beta
@@ -54,11 +51,13 @@ init_cond could be eiter callable or numerical; if float(int) given casting to c
         self.S = self.S_x + self.S_y
         self.footprint = self._get_footprint()
         self.initial_state = self.generate_initial_state()
-        #self.LHS = self._get_LHS()
 
     def generate_initial_state(self):
-        init_grid = []  # np.ones((self.mod.M*self.mod.N), dtype=float)
+        init_grid = []
         for i in range(self.M):
             for j in range(self.N):
-                init_grid.append(self.init_cond([i * self.dx, j * self.dy]))
+                init_grid.append(self.init_cond([i*self.dx,j*self.dy]))
         return np.asarray(init_grid, dtype=float)
+    
+    def stability_factor(self,i,j):
+        return 2.*(self.S_x*(1-np.cos(i*self.dx)) + self.S_y*(1-np.cos(j*self.dy)))

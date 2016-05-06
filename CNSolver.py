@@ -14,13 +14,29 @@ class CNSolver(object):
         self.initial_state = self.mod.initial_state
         self.buff = self.initial_state
         self.solutions.append(self.buff)
-        # self.solutions = np.array(self.buff, ndmin=3) #(self.mod.T, self.mod.M, self.mod.N))
-        #self.solutions = np.insert(self.solutions, self.buff, axis=1)
 
     def _decompose_element_position(self, index):
         j = index % self.mod.M
         i = (index - j) / self.mod.M
         return i, j
+    
+    def is_stable(self, sol):
+        l = self.mod.lambd
+        dt = self.mod.dt
+        a = self.mod.alpha
+        b = self.mod.beta
+        m = self.mod.m_0
+        max_stable = 0
+        for point in xrange(len(sol)):
+            i, j = self._decompose_element_position(point)
+            stable = (1.-(1.-l)*(dt*a*m + self.mod.stability_factor(i,j)) - (1-2.*l)*dt*a*b*sol[point])/\
+                        (1.-l*(dt*m*a-2.*sol[point]*dt*a*b-self.mod.stability_factor(i,j)))
+            if np.abs(stable)>max_stable:
+                max_stable = np.abs(stable)
+        if max_stable < 1:
+            return True
+        else:
+            return False
 
     def _generate_LHS(self):
         print "Generating LHS"
@@ -74,6 +90,11 @@ class CNSolver(object):
             print "Solving % s system" % k
             sol = linsolve.spsolve(LHS, RHS)
             sol = sol + self.buff
+            stable = self.is_stable(sol)
+            if not stable:
+                print "No stability!"
+                self.buff = self.initial_state
+                break
             self.solutions.append(sol)
             self.buff = sol
         for i in range(len(self.solutions)):
