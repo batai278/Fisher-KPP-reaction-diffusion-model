@@ -1,0 +1,185 @@
+%Бумага A4, шрифт 14
+\documentclass[a4paper,15pt]{article}
+\usepackage{cmap}
+\usepackage{mathtext}
+%\usepackage{cyrtimes}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[english,ukrainian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst, mathtools}
+\usepackage{icomma} 
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[compact,explicit]{titlesec}
+\usepackage{euscript}
+\usepackage{mathrsfs}
+\usepackage{fancybox}
+\usepackage{hyperref}
+\mathtoolsset{showonlyrefs=true}
+%Оформление библиографии через точку
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother
+
+%Полуторный интервал
+\renewcommand{\baselinestretch}{1.4}
+
+%Растягивать там, где не удается перенести слово
+\sloppy
+
+%Частота переносов
+\hyphenpenalty=2000
+
+\parindent 1cm  %абзацный отступ
+
+%Отступы у страниц
+\usepackage{geometry}
+\geometry{left=2.5cm}% левое поле
+\geometry{right=1cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2.5cm}% нижнее поле
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{}
+\setlength{\headheight}{17pt}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumi}{\arabic{enumi}.}
+\renewcommand{\theenumii}{.\arabic{enumii}.}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\theenumiii}{.\arabic{enumiii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+
+
+\graphicspath{{./img075/},{./img05/}, {./}}
+%Пользовательские функции
+\newcommand{\addimg}[3]{
+\begin{figure}
+\begin{center}
+\includegraphics[scale=#2]{#1}
+\end{center}
+\caption{#3}
+\end{figure}
+}
+\newcommand{\addimghere}[3]{
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=#2]{#1}
+\end{center}
+\caption{#3}
+\end{figure}
+}
+
+\newcommand{\addtwoimghere}[3]
+{
+\begin{figure}[h]{
+\begin{minipage}[h]{0.49\linewidth}
+{\includegraphics[width=#3\textwidth]{#1}}
+\end{minipage}
+%\hfill
+\begin{minipage}[h]{0.49\linewidth}
+{\includegraphics[width=#3\textwidth]{#2}}
+\end{minipage}
+	}
+\end{figure}
+}
+\newcommand{\addtwoapp}[3]{
+\begin{figure}[h]
+\hspace{-15ex}
+\begin{minipage}[h]{0.49\linewidth}
+{\includegraphics[width=#3\textwidth]{#1}}
+\end{minipage}
+\hspace{6ex}
+\begin{minipage}[h]{0.49\linewidth}
+{\includegraphics[width=#3\textwidth]{#2}}
+\end{minipage}
+\end{figure}
+
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[width=#3]{#1}
+%\ %vfill
+%\includegraphics[width=#3]{#2}
+%\end{center}
+%\caption{#4}
+%\end{figure}
+}
+
+% Cпецифические для курсовой
+\newcommand{\upl}[2]{u^{n+1}_{j\ifnum#1=0 ,\else\ifnum#1=1 +1,\else\ifnum#1=-1 -1,\fi\fi\fi k\ifnum#2=1+1\ifnum#2=-1 -1\fi\fi}}
+\newcommand{\un}[2]{u^{n}_{j\ifnum#1=0 ,\else\ifnum#1=1 +1,\else\ifnum#1=-1 -1,\fi\fi\fi k\ifnum#2=1+1\ifnum#2=-1 -1\fi\fi}}
+
+%Для кода
+\input{listing-python.prf}
+\lstset{
+language=Python,
+belowcaptionskip=\baselineskip,
+backgroundcolor=\color{white},
+style=python-idle-code,
+breaklines=true,
+breakatwhitespace=true,
+tabsize=2,
+numbers=left,
+numberstyle=\tiny,
+stepnumber=2,
+numbersep=8pt,
+showstringspaces=false,
+frame=tl,
+showtabs=false,
+framerule=1pt,
+rulecolor=\color{black},
+captionpos=t,
+%keepspaces
+}
+
+%В документ включаются различные части работы
+\begin{document}
+\newpage
+\large
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{1em}{#1}
+%\titleformat{\title}[block]{\filcenter\Large\bfseries}{\thesection}{1ex}{\MakeUppercase}
+
+\input{title}
+\newpage
+\tableofcontents
+\newpage
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{1em}{\thesection\quad#1}
+\titleformat{\subsection}[block]{\large\bfseries\filcenter}{}{1em}{\thesubsection\quad#1}
+\titleformat{\subsubsection}[block]{\large\bfseries\filcenter}{}{1em}{\thesubsubsection\quad#1}
+\titleformat{\paragraph}[block]{\Large\bfseries\filcenter}{}{1em}{#1}
+
+\newcommand{\anonsection}[1]{
+\paragraph{#1}\addcontentsline{toc}{section}{#1}
+}
+
+\input{section1}
+\newpage
+\input{section2}
+\newpage
+\input{section3}
+\newpage
+\input{section4}
+\newpage
+\input{results}
+\newpage
+%\input{finally}
+\newpage
+\input{listing} % Should be reconstruct into appendix
+\newpage
+\input{appendix2}
+\newpage
+\input{literature}
+\end{document}

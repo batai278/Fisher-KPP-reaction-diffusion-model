@@ -1,0 +1,145 @@
+%Бумага A4, шрифт 14
+\documentclass[a4paper,12pt]{article}
+%\usepackage{cyrtimes}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage[T2A]{fontenc}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,cite,enumerate,float,indentfirst} 
+\usepackage{graphicx}
+\usepackage[compact,explicit]{titlesec}
+
+%Оформление библиографии через точку
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother
+
+%Полуторный интервал
+\renewcommand{\baselinestretch}{1.4}
+
+%Растягивать там, где не удается перенести слово
+\sloppy
+
+%Частота переносов
+\hyphenpenalty=2000
+
+\parindent 1cm  %абзацный отступ
+
+%Отступы у страниц
+\usepackage{geometry}
+\geometry{left=2cm}% левое поле
+\geometry{right=1.5cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2cm}% нижнее поле
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+
+%Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumi}{\arabic{enumi}.}
+\renewcommand{\theenumii}{.\arabic{enumii}.}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\theenumiii}{.\arabic{enumiii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+
+%Пользовательские функции
+\newcommand{\addimg}[3]{
+\begin{figure}
+\begin{center}
+\includegraphics[scale=#2]{#1}
+\end{center}
+\caption{#3}
+\end{figure}
+}
+\newcommand{\addimghere}[3]{
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=#2]{#1}
+\end{center}
+\caption{#3}
+\end{figure}
+}
+
+\newcommand{\addtwoimghere}[4] {
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=#3]{#1}
+\hfill
+\includegraphics[scale=#3]{#2}
+\end{center}
+\caption{#4}
+\end{figure}
+}
+
+%Для кода
+\input{listing-python.prf}
+\lstset{
+language=Python,
+belowcaptionskip=\baselineskip,
+backgroundcolor=\color{white},
+style=python-idle-code,
+breaklines=true,
+breakatwhitespace=true,
+tabsize=2,
+numbers=left,
+numberstyle=\tiny,
+stepnumber=2,
+numbersep=10pt,
+showstringspaces=false,
+frame=L,
+framerule=0.4pt,
+rulecolor=\color{black},
+captionpos=t
+}
+
+%\newenvironment{listing}
+%{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\footnotesize\bfseries}
+%{\end{list}}
+
+%\newcommand{\code}[1] {
+% \texttt{\begin{footnotesize}#1\end{footnotesize}}
+%}
+
+
+%В документ включаются различные части работы
+\begin{document}
+\newpage
+\large
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{1em}{#1}
+%\input{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{1em}{\thesection\quad#1}
+\titleformat{\subsection}[block]{\large\bfseries\filcenter}{}{1em}{\thesubsection\quad#1}
+\titleformat{\subsubsection}[block]{\large\bfseries\filcenter}{}{1em}{\thesubsubsection\quad#1}
+\titleformat{\paragraph}[block]{\Large\bfseries\filcenter}{}{1em}{#1}
+
+\newcommand{\anonsection}[1]{
+\paragraph{#1}\addcontentsline{toc}{section}{#1}
+}
+
+%\input{introduction}
+\newpage
+%\input{problem}
+\newpage
+%\input{architecture}
+\newpage
+%\input{finally}
+\newpage
+\input{listing} % Should be reconstruct into appendix
+\newpage
+%\input{literature}
+\end{document}
